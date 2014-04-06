@@ -1,0 +1,11 @@
+{
+    "name"        : "node-olx"
+  , "version"     : "0.0.1"
+  , "homepage"    : "http://abru.pt"
+  , "description" : "OLX scraper"
+  , "dependencies": {
+      "cheerio"           : "*",
+      "request"           : "*"
+    }
+  , "main"    : "./main.js"
+}
