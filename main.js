@@ -40,7 +40,7 @@ function gunzipJSON(response, cb){
     $ = cheerio.load(bulk);
     $('.results').each(function() {
       var title = $(this).find('.ti a').html();
-
+      var img =  $(this).find('.pic a > img').attr('src');
       var aux = $(this).find('.price').html().split(' ');
       for (var i = aux.length - 1; i >= 0; i--) {
         if(isNaN(aux[i].replace('.', '').replace(',', '.')) === false) {
@@ -50,7 +50,7 @@ function gunzipJSON(response, cb){
       var price;
       if(aux[i]) price = aux[i].replace('.', '').replace(',', '.');
 
-      console.log(title + ' - ' + price);
+      console.log(title + ' - ' + price + ' - ' + img);
     });
     cb();
   });
