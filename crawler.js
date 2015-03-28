@@ -1,11 +1,12 @@
 var request = require('request'),
   zlib = require('zlib'),
   cheerio = require('cheerio'),
-  events = require('events');
+  events = require('events'),
+  sys = require('sys');
 
 
 var Crawler = function(options) {
-  if(options.url) {
+  if (options.url) {
     this.url = options.url;
   } else {
     this.category = options.category;
@@ -15,7 +16,7 @@ var Crawler = function(options) {
   }
 };
 
-sys.inherits(Server, events.EventEmitter);
+sys.inherits(Crawler, events.EventEmitter);
 
 Crawler.prototype.start = function() {
   this.scrapPage();
@@ -26,7 +27,7 @@ Crawler.prototype.scrapPage = function() {
 
   var url = 'http://www.olx.pt/';
 
-  if(search) {
+  if (this.search) {
     url = 'http://www.olx.pt/nf/';
   }
 
@@ -45,7 +46,7 @@ Crawler.prototype.scrapPage = function() {
 
   var response = request(options);
 
-  gunzipJSON(response, function() {
+  this.gunzipJSON(response, function() {
     setTimeout(function() {
       self.page++;
       self.scrapPage();
@@ -87,7 +88,7 @@ Crawler.prototype.gunzipJSON = function(response, cb) {
         'image': img
       });
 
-      console.log(title + ' - ' + price + ' - ' + url);
+      //console.log(title + ' - ' + price + ' - ' + url);
     });
     cb();
   });
