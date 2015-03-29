@@ -35,7 +35,7 @@ Crawler.prototype.prepURL = function() {
       url = 'http://www.olx.pt/nf/';
     }
 
-    url += this.category + '-p-' + this.page + (this.search || '');
+    url += this.category + '-p-' + this.page + '/' + (this.search || '');
   } else {
     url += '-p-' + this.page;
   }
