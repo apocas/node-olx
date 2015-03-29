@@ -11,4 +11,8 @@ olx.on('hit', function(hit) {
   console.log(hit);
 });
 
+olx.on('page', function(data) {
+  console.log(data);
+});
+
 olx.start();
