@@ -22,16 +22,31 @@ Crawler.prototype.start = function() {
   this.scrapPage();
 };
 
-Crawler.prototype.scrapPage = function() {
-  var self = this;
+Crawler.prototype.single = function(page) {
+  this.page = page || this.page;
+  this.scrapPage(true);
+};
 
-  var url = 'http://www.olx.pt/';
+Crawler.prototype.prepURL = function() {
+  var url = this.url || 'http://www.olx.pt/';
 
-  if (this.search) {
-    url = 'http://www.olx.pt/nf/';
+  if(!this.url) {
+    if (this.search) {
+      url = 'http://www.olx.pt/nf/';
+    }
+
+    url += this.category + '-p-' + this.page + (this.search || '');
+  } else {
+    url += '-p-' + this.page;
   }
 
-  url += this.category + '-p-' + this.page + (this.search || '');
+  return url;
+};
+
+Crawler.prototype.scrapPage = function(single) {
+  var self = this;
+
+  var url = this.prepURL();
 
   console.log('Fetching ' + url);
 
@@ -47,10 +62,15 @@ Crawler.prototype.scrapPage = function() {
   var response = request(options);
 
   this.gunzipJSON(response, function() {
-    setTimeout(function() {
-      self.page++;
-      self.scrapPage();
-    }, 1000);
+    self.emit('page', {
+      'page': self.page
+    });
+    if(!single && (self.pages - self.page >= 0 || self.pages === -1)) {
+      setTimeout(function() {
+        self.page++;
+        self.scrapPage();
+      }, 1000);
+    }
   });
 };
 
